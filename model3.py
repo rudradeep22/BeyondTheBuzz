@@ -1,15 +1,4 @@
 import numpy as np
-import pandas as pd
-
-data = pd.read_csv('mnist_train.csv')
-data = np.array(data)
-m, n = data.shape
-np.random.shuffle(data) # shuffle before splitting into dev and training sets
-
-data_train = data[1000:m].T
-Y_train = data_train[0]
-X_train = data_train[1:n]
-X_train = X_train / 255.
 
 
 def ReLU(X):
@@ -88,14 +77,14 @@ class ANN():
         dZ2 = self.A_list[-1] - y_true
         dW2 = 1 / m * dZ2.dot(self.A_list[-2].T)
         print('DW is: ',dW2)
-        db2 = 1 / m * dZ2
+        db2 = 1 / m * np.sum(dZ2)
         grad_z.append(dZ2)
         grad_W.append(dW2)
         grad_b.append(db2)
         for i in range(len(self.weights)-2, -1, -1):
-            dZ = np.dot(self.weights[i+1].T, grad_z[-1]) * ReLU_deriv(self.Z_list[i])
+            dZ = self.weights[i+1].T.dot(grad_z[-1]) * ReLU_deriv(self.Z_list[i])
             dW = 1 / m * np.dot(dZ, self.A_list[i].T)
-            db = 1 / m * dZ
+            db = 1 / m * np.sum(dZ)
             grad_z.append(dZ)
             grad_W.append(dW)
             grad_b.append(db)
@@ -114,8 +103,11 @@ class ANN():
                 predictions = get_predictions(self.A_list[-1])
                 print(get_accuracy(predictions, y))
 
-model = ANN(784, 10, 0.1, 1, [10])
-model.train(X_train, Y_train, 10)
+    def predict(self, X):
+        self.__forward(X)
+        pred = self.A_list[-1]
+        return pred
+
 
 
 
