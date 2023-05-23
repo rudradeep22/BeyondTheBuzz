@@ -1,1 +1,1 @@
-# BeyondTheBuzz-Assignmnet1
+# BeyondTheBuzz-Assignment1
