@@ -1,28 +1,28 @@
 import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score 
-from model3 import ANN
+from model import ANN
 
-data = pd.read_csv('mnist_train.csv')
-data = np.array(data)
-m, n = data.shape
-np.random.shuffle(data) 
+model = ANN(784, 10, 0.1, 2, [32, 32])
+data_train = pd.read_csv('C:/Users/rudra/OneDrive/Desktop/Python_Work/BYB A1/mnist_train.csv')
+data_train = np.array(data_train)
+X_train = data_train[:, 1:]
+X_train = X_train/255
+Y_train = data_train[:, 0]
 
-data_train = data.T
-Y_train = data_train[0]
-X_train = data_train[1:n]
-X_train = X_train / 255.
+data_test = pd.read_csv('C:/Users/rudra/OneDrive/Desktop/Python_Work/BYB A1/mnist_test.csv')
+data_test = np.array(data_test)
+X_test = data_test[:, 1:]
+X_test = X_test/255
+Y_test = data_test[:, 0]
 
-data2 = pd.read_csv('mnist_test.csv')
-data2 = np.array(data2)
-np.random.shuffle(data2)
-data2 = data2.T
-y_test = data2[0]
-X_test = data2[1:n]
-X_test = X_test / 255.
+for i in range(3):
+    model.train_all(X_train, Y_train)
 
-model = ANN(784, 10, 0.1, 1, [10])
-model.train(X_train, Y_train, 10)
-y_pred = model.predict(X_test[0])
-acc = accuracy_score(y_test[0], y_pred)
-print(f'Accuracy is: {acc}')
+y_pred = model.predict(X_test, Y_test)
+y_hat = []
+for i in y_pred:
+    prediction = np.argmax(i)
+    y_hat.append(prediction)
+acc = accuracy_score(Y_test, y_hat)
+print(f'Accuracy is: {acc*100}%')
