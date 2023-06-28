@@ -6,4 +6,4 @@ The model for generating images is given in model_A_2.py . To generate models, d
 # BeyondTheBuzz-Assignment3
 The model is present in the Jupyter Notebook BYB_A_3.ipynb . The generated Dinosaur names are given in Generated_dinos.csv .
 # BeyondTheBuzz-Assignment4
-The model is present in LSTM_project.ipynb .
+The model is present in BYB_A_4.ipynb .
